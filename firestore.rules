@@ -1,0 +1,6 @@
+rules_version = '2';
+service cloud.firestore { match /databases/{database}/documents {
+function isAdmin() { return request.auth != null && request.auth.uid in ['YbNHhAPfOubdox4ugkerbJ16q5H3','YifAuudDwBOPN9XVphHuziW4oxo2']; }
+match /site/content { allow read: if true; allow create, update: if isAdmin(); allow delete: if false; }
+match /sitePhotos/{photoId} { allow get: if true; allow list: if false; allow create: if isAdmin() && request.resource.data.keys().hasOnly(['image']) && request.resource.data.image is string && request.resource.data.image.size() < 900000; allow update, delete: if false; }
+} }
